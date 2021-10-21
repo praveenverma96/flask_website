@@ -1,0 +1,299 @@
+{% extends 'base.html' %}
+{% block title %} Download {% endblock title %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+    
+<link rel="stylesheet" href="{{ url_for('static', filename = './css/lightbox.min.css' )}}">
+<title>Ethidox | Download</title>
+<style>
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+    
+    td, th {
+    
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+    
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+    </style>
+</head>  
+<body id="download">
+{% endblock head %}
+{% block navdowload %}active{% endblock navdowload %}
+{% block body %}
+
+    <div class="container">
+        <br> 
+        <p>We may insert download link of new pdfs into our database by clicking on this button <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newrecord">
+            Add new Record</button> <b> Note: A user must be logged In as Admin to perform this task </b></p>
+<br>  <br>  
+<p>Below is the form to query the available pdfs, A user may download notes using the download icon <span class="glyphicon glyphicon-save"></span> or generate QR Code <span class="glyphicon glyphicon-qrcode"></span> of the respective pdf</p>
+        <form action="/query" method="POST">
+    </div>
+
+      <div class="container list-inline">
+        
+        <div class="col-md-6 form-group">
+        <div class="form-group">
+        <label for="subject">Branch</label>
+        <select id="Branch" class="form-control" required="required" name="Branch">
+        <option value="" selected="" disabled="">Choose One:</option>
+        <!-- <option value="*">OTHER/ALL</option> -->
+        <option value="CIVIL">CIVIL</option>
+        <option value="CSE">CSE</option>
+        <option value="IT">IT</option>
+        <option value="ECE">ECE</option>
+        <option value="EEE">EEE</option>
+        <option value="MECH">MECHANICAL</option>
+        
+        </select>
+        </div></div>
+        
+        <div class="col-md-6 form-group">
+        <div class="form-group">
+        <label for="subject">Semester</label>
+        <select id="Semester" class="form-control" required="required" name="Semester">
+        <option value="" selected="" disabled="">Choose One:</option>
+        <!-- <option value="*">All</option> -->
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        </select>
+        </div></div>
+        
+        <button type="submit" id="notez" class="btn btn-block"><span class="glyphicon glyphicon-ok"> Show Results</span></button>
+        <br>
+        <b> Note: To Update / Detele a record, the user must be logged In as Admin</b>
+        <br>
+        <br>
+        
+        </form>
+        </div>
+
+
+
+
+    <div class="container-fluid">
+    <table id="table_id" class="display" cellspacing="0" width="95%" cellpadding="0" >
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Unit</th>
+            <th scope="col">Subject</th>
+            <th scope="col">Semester</th>
+            <th scope="col">Branch</th>
+            <th scope="col">Download</th>
+            <th scope="col">Delete</th>
+            <th scope="col">Update</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for i in allNotes %}
+            <tr>
+                <th scope = "row">{{loop.index}}</th>
+                <td>{{i.unit}}</td>
+                <td>{{i.subject}}</td>
+                <td>{{i.semester}}</td>
+                <td>{{i.branch}}</td>
+                
+                <td><a href = "{{i.link}}" target="_blank" ><span class="glyphicon glyphicon-save"></span></a>&nbsp;&nbsp;
+                    <a href = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{i.link}}" rel="prettyPhoto" data-lightbox="MyGallery" data-title="<b>Unit-{{i.unit}}-{{i.subject}}</b>" ><img src={{ url_for('static', filename = 'img/ethidox-qr.JPG' )}} alt="QR" height="32" width="32"></a></td>
+                    {% if current_user.is_authenticated %}
+                    <td><a href="/delete/{{i.sno}}" ><button type="button" class="btn btn-outline-danger">Delete</button></a></td>
+                    <td><a href="/update/{{i.sno}}" ><button type="button" class="btn btn-outline-danger">Update</button></a></td>
+               {% else %} 
+               
+               <td><a href="" ><button onclick="myFunction()" type="button" class="btn btn-outline-danger">Delete</button></a></td>
+                <td><a href="" ><button onclick="myFunction()" type="button" class="btn btn-outline-danger">Update</button></a></td>
+              
+                    {% endif %}
+                
+                
+                
+           
+           
+            </tr>  
+            {% endfor %}
+        </tbody></div>
+      </table><br>
+
+{% if current_user.is_authenticated %}
+<!-- Modal Add Record -->
+<div class="modal fade" id="newrecord" role="dialog">
+    <div class="modal-dialog">
+    
+                          <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">×</button>
+              <h4><span class="glyphicon glyphicon-dropplus"></span> Add Record</h4>
+        </div>
+              <div class="modal-body">
+                  <form role="form" action="/download" method="POST" id = 1>
+                    <div class="form-group">
+                        <label for="unit"><span class="glyphicon glyphicon-pencil"></span>Unit</label>
+                        <select name="unit" id="unit">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                          </select>
+                        <!-- <input type="text" class="form-control" name="unit" id="unit" required="" pattern="[0-9]" placeholder="Single Numer is allowed"> -->
+                    </div>
+                      <div class="form-group">
+                          <label for="usrname"><span class="glyphicon glyphicon-pencil"></span>Subject</label>
+                          <input type="text" class="form-control" name="subject" id="subject" required=""  placeholder="Name (only letters and spaces are allowed)">
+                      </div>
+                      <div class="form-group">
+                        <label for="usrname"><span class="glyphicon glyphicon-qrcode"></span> link<span class="glyphicon glyphicon-link"></span></label>
+                        <input type="text" class="form-control" name="link" id="link" required="" placeholder="Google Drive Link" >
+                    </div>
+                    <div class="form-group">
+                        <label for="usrname"><span class="glyphicon glyphicon-education"></span>Semester</label><br>
+                        <!-- <input type="text" class="form-control" name="semester" id="semester" required="" placeholder = "If multiple seperate by comma e.g. 1, 2, 4"  > -->
+                          <div class = "col-md-12">  
+                            <input type="checkbox" name="1" value="semester">&nbsp;1&nbsp;&nbsp;
+                            <input type="checkbox" name="2" value="semester">&nbsp;2&nbsp;&nbsp;
+                            <input type="checkbox" name="3" value="semester">&nbsp;3&nbsp;&nbsp;
+                            <input type="checkbox" name="4" value="semester">&nbsp;4&nbsp;&nbsp;
+                            <input type="checkbox" name="5" value="semester">&nbsp;5&nbsp;&nbsp;
+                            <input type="checkbox" name="6" value="semester">&nbsp;6&nbsp;&nbsp;
+                            <input type="checkbox" name="7" value="semester">&nbsp;7&nbsp;&nbsp;
+                            <input type="checkbox" name="8" value="semester">&nbsp;8&nbsp;&nbsp;
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                            <label for="branch">Select Branch:</label><br>
+                            <div class = "col-md-2">
+                            <input type="checkbox" name="EEE" value="branch">EEE<br></div>
+                            <div class = "col-md-2">
+                            <input type="checkbox" name="ECE" value="branch">ECE<br></div>
+                            <div class = "col-md-2">
+                            <input type="checkbox" name="CSE" value="branch">CSE<br></div>
+                            <div class = "col-md-2">
+                            <input type="checkbox" name="IT" value="branch">IT<br></div>
+                            <div class = "col-md-2">
+                            <input type="checkbox" name="CIVIL" value="branch">CIVIL<br></div>
+                            <div class = "col-md-2">
+                            <input type="checkbox" name="MECH" value="branch">MECH.<br></div><br>
+                        </div>
+                          <button type="submit"  class="btn btn-block">Add Record
+                              <span class="glyphicon glyphicon-ok"></span>
+                          </button>
+                        </form>
+                </div>
+                        <div class="modal-footer">
+                              <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal">
+                              <span class="glyphicon glyphicon-remove"></span> Cancel
+                              </button>
+                              <p><a href="#">help </a>chahiye?</p>
+                        </div>
+    </div>
+    </div>
+    </div>
+    <!-- End of Add Record Modal -->
+{% else %}
+
+<!-- Modal Add Record -->
+<div class="modal fade" id="newrecord" role="dialog">
+    <div class="modal-dialog">
+    
+                          <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">×</button>
+              <h4><span class="glyphicon glyphicon-dropplus"></span> LogIn required</h4>
+        </div>
+              <div class="modal-body">
+                  <form role="form" action="" method="POST" id = 1>
+                    
+                    <h5>User needs to be Logged In to Access this form</h5>
+                        </form>
+                </div>
+                        <div class="modal-footer">
+                              <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal">
+                              <span class="glyphicon glyphicon-remove"></span> Cancel
+                              </button>
+                              <p><a href="#">help </a>chahiye?</p>
+                        </div>
+    </div>
+    </div>
+    </div>
+    <!-- End of Add Record Modal -->
+
+{% endif %}
+       <div>          
+    
+     <h3 class="text-center">Functionalities of this website</h3>
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#home">Download</a></li>
+      <li><a data-toggle="tab" href="#menu1">CRUD</a></li>
+      <li><a data-toggle="tab" href="#menu2">Authentication</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <div id="home" class="tab-pane fade in active">
+        <h2> Download Pdfs </h2>
+        <p>A user may download the existing pdf using the download icon <span class="glyphicon glyphicon-save"></span> or generate QR Code <span class="glyphicon glyphicon-qrcode"></span> of the respective pdf from the <strong>Download</strong> Page.</p> </p>
+      </div>
+      <div id="menu1" class="tab-pane fade">
+         <h2>Create | Read | Update | Delete</h2>
+        <p>Any user may Search for Notes or query then using form, However to <strong>Create / Delete / Update</strong> a record a user Needs to be logged In </p>
+      </div>
+      <div id="menu2" class="tab-pane fade">
+        <h2>Sign UP | Log In</h2>
+        <p>A user may Sign Up using the sign up form, Auth COde is required to sign up to prevent unauthorised Sign Ups</p>
+      </div>
+    </div>
+</div>
+     
+            {% endblock body %}
+            
+            {% block body2 %}
+
+            <script type="text/javascript" >
+                function myFunction() {
+                  alert("Login Required to access this functionality !!");
+                }
+                </script>
+      <script type="text/javascript" src= {{ url_for('static', filename = 'js/lightbox-plus-jquery.min.js' )}}></script>
+<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
+    <!-- <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script> -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+    <script type="text/javascript">  
+    $(document).ready( function () {
+        $('#table_id').DataTable(
+            {
+  "columns": [
+  { "width": "4%" },
+    { "width": "4%" },
+    null,
+    { "width": "4%" },
+    { "width": "10%" },
+    { "width": "4%" },
+    { "width": "3%" },
+    { "width": "3%" }
+  ]
+}
+        );
+    } );</script>
+
+{% endblock body2 %}

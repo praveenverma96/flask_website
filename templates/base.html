@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename = './css/bootstrap.min.css' )}}">
+    <link rel="shortcut icon" href= "{{ url_for('static', filename = './img/favicon.PNG' )}}" type="image/png">
+    <link rel="stylesheet" href="{{ url_for('static', filename = './css/style1.css' )}}">
+    <title>Ethidox | {% block title %} {% endblock title %}</title>
+    
+    {% block head %} {% endblock head %}
+
+
+<!--NAVBAR START-->
+    
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        
+        <a class="navbar-brand" href="/"><img src = {{ url_for('static', filename = './img/ethidox.png' )}}></a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li class="{% block navhome %}{% endblock navhome %}"><a href="/">Home</a></li>
+          <li class="{% block navdowload %}{% endblock navdowload %}"><a href="/download">Download</a></li>
+          <!-- <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Download<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#qwerty">Notes</a></li>
+              <li><a href="#">Question Paper</a></li>
+            </ul>
+          </li> -->
+          <li><a href="/#contact">Contact Us</a></li>
+
+
+          <li>{% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+          {% if category == 'error' %}
+          <div class="alert alert-warning alert-dismissible " role="alert">
+            
+            <a>{{message}}</a>
+
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          {% else %}
+          <div class="alert alert-success alert-dismissible" role="alert">
+            <a>{{message}}</a>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          {% endif %}
+          {% endfor %}
+          {% endif %}
+          {% endwith %}</li>
+        </ul>
+        <!-- <form class="navbar-form navbar-left">
+        <div class="form-group">
+        <input type="text" class="form-control" placeholder="Search Karo">
+        </div>
+        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+        </form> -->
+        <ul class="nav navbar-nav navbar-right">
+            {% if current_user.is_authenticated %}
+            <li><a>Logged in as {{current_user}} !!</a></li>
+            <li><a href="/logout" class="btn" data-toggle="modal"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
+            {% else %}
+          <li><a href="#signup" class="btn" data-toggle="modal"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+          <li><a href="#login" class="btn" data-toggle="modal"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  
+
+
+      <!--NAVBAR END-->
+    {% block body %} {% endblock body %}
+
+<!-- Below are Modal Login , signup and common script -->
+
+ <!-- Modal login -->
+ <div class="modal fade" id="login" role="dialog">
+    <div class="modal-dialog">
+    
+                 <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+             <button type="button" class="close" data-dismiss="modal">×</button>
+            <h4><span class="glyphicon glyphicon-log-in"></span> Log in</h4>
+        </div>
+        <div class="modal-body">
+            <form role="form" action='/login' method ="POST">
+                  <div class="form-group">
+                       <label for="email"><span class="glyphicon glyphicon-envelope"></span> Email </label>
+                       <input type="email" class="form-control" id="email" name = "email" required="required" placeholder="">
+                  </div>
+                  <div class="form-group">
+                        <label for="password"><span class="glyphicon glyphicon-lock"></span> Password</label>
+                       <input type="password" class="form-control" id="password" name = "password" required="required" placeholder="??????">
+                  </div>
+                  <button type="submit" class="btn btn-block">Log in
+                        <span class="glyphicon glyphicon-ok"></span>
+                  </button>
+              </form>
+          </div>
+          <div class="modal-footer">
+                     <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal">
+                       <span class="glyphicon glyphicon-remove"></span> Cancel
+                     </button>
+                       <p><a href="#">help </a>chahiye?</p>
+          </div>
+    </div>
+    </div>
+    </div>
+
+                    <!-- Modal signup -->
+    <div class="modal fade" id="signup" role="dialog">
+    <div class="modal-dialog">
+    
+                          <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">×</button>
+              <h4><span class="glyphicon glyphicon-user"></span> Sign up
+            
+            
+
+          
+            
+            </h4>
+        </div>
+              <div class="modal-body">
+                  <form role="form" action='/signup' id  ='akon1' method ="POST">
+                      <div class="form-group">
+                          <label for="name"><span class="glyphicon glyphicon-pencil"></span> Name</label>
+                          <input type="text" class="form-control" id="name" required="required" name="name"  placeholder="Name (only letters and spaces are allowed)">
+                      </div>
+                      <div class="form-group">
+                            <label for="email"><span class="glyphicon glyphicon-envelope"></span> Email</label>
+                            <input type="email" class="form-control" id="email" name = "email" required="required" placeholder="Enter full email address">
+                      </div>
+                      <div class="form-group">
+                             <label for="auth"><span class="glyphicon glyphicon-phone"></span>Auth Code</label>
+                              <input type="text" class="form-control" id="auth" name="auth" required="required" placeholder="Enter your secret Auth Code">
+                      </div>
+    
+                        <div class="form-group">
+                              <label for="password1"><span class="glyphicon glyphicon-eye-close"></span> Password</label>
+                              <input type="password" class="form-control" id="password1" required="required" name="password1" placeholder="??????">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password2"><span class="glyphicon glyphicon-eye-close"></span> Password (Confirm)</label>
+                            <input type="password" class="form-control" id="password2" name="password2" required="required" placeholder="Re-Enter password">
+                      </div>
+                          <button id='akon' type="submit" class="btn btn-block">Sign up
+                              <span class="glyphicon glyphicon-ok"></span>
+                          </button>
+                        </form>
+                </div>
+                        <div class="modal-footer">
+                              <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal">
+                              <span class="glyphicon glyphicon-remove"></span> Cancel
+                              </button>
+                              <p><a href="#">help </a>chahiye?</p>
+                        </div>
+    </div>
+    </div>
+    </div>
+
+   
+   
+
+
+
+
+
+
+   
+    <script type="text/javascript" src= {{ url_for('static', filename = 'js/jquery.js' )}}></script>
+    <script type="text/javascript" src= {{ url_for('static', filename = 'js/bootstrap.min.js' )}}></script>
+
+
+    {% block body2 %} {% endblock body2 %}
+
+</body>
+</html>

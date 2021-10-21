@@ -1,0 +1,202 @@
+{% extends 'base.html' %}
+{% block title %} Home {% endblock title %}
+{% block head %}
+       <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
+  
+<style>
+header {
+    font-size: 40px;
+    font-weight: bolder;
+    margin-top: 12%;
+     text-shadow: 2px 2px 8px #ff0000; 
+    margin-left: 15%;
+    color: white;
+}
+header a span {
+    font-size: 40px;
+    font-weight: bolder;
+    margin-top: 12%;
+     text-shadow: 2px 2px 8px #ff0000; 
+    color: white;
+}
+
+</style>
+  <script>var TxtType = function(el, toRotate, period) {
+    this.toRotate = toRotate;
+    this.el = el;
+    this.loopNum = 0;
+    this.period = parseInt(period, 2) || 100; //10 2000
+    this.txt = '';
+    this.tick();
+    this.isDeleting = false;
+};
+
+TxtType.prototype.tick = function() {
+    var i = this.loopNum % this.toRotate.length;
+    var fullTxt = this.toRotate[i];
+
+    if (this.isDeleting) {
+    this.txt = fullTxt.substring(0, this.txt.length - 1);
+    } else {
+    this.txt = fullTxt.substring(0, this.txt.length + 1);
+    }
+
+    this.el.innerHTML = '<span class="wrap">'+this.txt+'</span>';
+
+    var that = this;
+    var delta = 100 - Math.random() * 100; //200
+
+    if (this.isDeleting) { delta /= 2; }
+
+    if (!this.isDeleting && this.txt === fullTxt) {
+    delta = this.period;
+    this.isDeleting = true;
+    } else if (this.isDeleting && this.txt === '') {
+    this.isDeleting = false;
+    this.loopNum++;
+    delta = 500;
+    }
+
+    setTimeout(function() {
+    that.tick();
+    }, delta);
+};
+
+window.onload = function() {
+    var elements = document.getElementsByClassName('typewrite');
+    for (var i=0; i<elements.length; i++) {
+        var toRotate = elements[i].getAttribute('data-type');
+        var period = elements[i].getAttribute('data-period');
+        if (toRotate) {
+          new TxtType(elements[i], JSON.parse(toRotate), period);
+        }
+    }
+    // INJECT CSS
+    var css = document.createElement("style");
+    css.type = "text/css";
+    css.innerHTML = ".typewrite > .wrap { border-right: 0.08em solid #fff}";
+    document.body.appendChild(css);
+};</script>
+   
+</head> 
+<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="50"></body>
+{% endblock head %}
+{% block navhome %}active{% endblock navhome %}
+{% block body %}
+<!-- myCarousel -->
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <!-- Indicators -->
+     <!-- <ol class="carousel-indicators">
+          <li data-target="#myCarousel" data-slide-to="1"></li>
+
+     </ol> -->
+
+<!-- Wrapper for slides -->
+<div class="carousel-inner" role="listbox">
+    <div class="item active">
+      <img src= {{ url_for('static', filename = './img/ethidox1.png' )}} alt="background-=image"  width="100%" >
+      <div class="carousel-caption">
+       <!-- <div class="center"  -->
+
+        <!-- <h3>Script Auto Write</h3> -->
+        <!-- <p>The atmosphere in New York is lorem ipsum.</p> -->
+      <!-- </div> -->
+    </div>
+    </div>
+
+  </div></div>
+<!-- End myCarousel -->
+<!-- typed.js -->
+<!-- 
+  <div class=""><br>
+<em><span class="type-effect"></span></em>
+</div></header> -->
+<header><h1>
+  <b class="heading">ethidox.xyz</b><br>
+  <a href="" class="typewrite" data-period="1000" data-type='[ "Download Pdfs", "Generate QR-code", "Authenticate.", "Perform CRUD Operation." ]'>
+    <span class="wrap"></span>
+  </a>
+</h1></header>
+
+<!-- <div id="download" class="container"><a href="">Akon</a></div> -->
+<!-- <div id="contact" class="container"><a href="">Akon</a></div> -->
+<div id="contact" class="container">
+    <h3 class="text-center">Contact Us</h3>
+   <p class="text-center"><em>You are Awesome!</em></p>
+
+   <div class="row">
+     <div class="col-md-4">
+            <p>Connect me on .</p>
+             <p><a href="https://www.linkedin.com/in/0x00153/" data-toggle="tooltip" title="Linked.in" target="_blank"><img src= {{ url_for('static', filename = './img/linklogo.JPG' )}} alt="linkedin logo" style="float:left;width:90px;height:24px;"> </a></p>
+           <p><a href="https://www.hackerrank.com/praveen_hal" data-toggle="tooltip" title="Linked.in" target="_blank"><img src= {{ url_for('static', filename = './img/hackerrank.png' )}} alt="Hackerrank logo" style="float:left;width:24px;height:24px;"> </a></p>
+           <p><a href="https://github.com/praveenverma96" data-toggle="tooltip" title="Linked.in" target="_blank"><img src= {{ url_for('static', filename = './img/github.png' )}} alt="Github logo" style="float:left;width:66px;height:24px;"> </a></p>
+           <br><br> <p><span class="glyphicon glyphicon-phone"> Phone#: +91-9140671239</span></p>
+            <p><span class="glyphicon glyphicon-envelope"></span>Email: vpraveen.hal@gmail.com</p>
+            <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fethidox%2F&tabs&width=340&height=154&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" width="340" height="154" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+       </div>
+          <div class="col-md-8">
+            <form action="/contact" method="post">
+            <div class="row">
+              <div class="col-sm-6 form-group">
+                <input class="form-control" id="name" name="name" placeholder="Name" type="text" required>
+              </div>
+              <div class="col-sm-6 form-group">
+                <input class="form-control" id="email" name="email" placeholder="Email" type="email" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+                          <label for="subject">Subject</label>
+                               <select id="subject" class="form-control" required="required" name="subject">
+                                     <option value="" selected="" disabled="">Choose One:</option>
+                                     <option value="Authentication Problem">Authentication Problem</option>
+                                     <option value="Delete / Add / Update">Delete / Add / Update Functionality not working</option>
+                                     <option value="Download Button / QR generator">Download Button / QR generator not working</option>
+                                     <option value="Advice/Feedback">Advice/Feedback</option>
+                                     <option value="Others">Others</option>
+                                  </select>
+                                            </div>
+
+
+            <textarea class="form-control" id="comments" name="comments" placeholder="Comment" rows="5"></textarea>
+            <br>
+            <div class="row">
+              <div class="col-md-12 form-group">
+                <button class="btn pull-right" type="submit">Send</button>
+              </div>
+            </div> </form>
+          </div>
+        </div>
+<!--     //added-->
+    
+        <br>
+
+    <h3 class="text-center">Functionalities of this website</h3>
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#home">Download</a></li>
+      <li><a data-toggle="tab" href="#menu1">CRUD</a></li>
+      <li><a data-toggle="tab" href="#menu2">Authentication</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <div id="home" class="tab-pane fade in active">
+        <h2> Download Pdfs </h2>
+        <p>A user may download the existing pdf using the download icon <span class="glyphicon glyphicon-save"></span> or generate QR Code <span class="glyphicon glyphicon-qrcode"></span> of the respective pdf from the <strong>Download</strong> Page.</p> </p>
+      </div>
+      <div id="menu1" class="tab-pane fade">
+         <h2>Create | Read | Update | Delete</h2>
+        <p>Any user may Search for Notes or query then using form, However to <strong>Create / Delete / Update</strong> a record a user Needs to be logged In </p>
+      </div>
+      <div id="menu2" class="tab-pane fade">
+        <h2>Sign UP | Log In</h2>
+        <p>A user may Sign Up using the sign up form, Auth COde is required to sign up to prevent unauthorised Sign Ups</p>
+      </div>
+    </div>
+</div>
+    
+    {% endblock body %}
+      
+
+   
+{% block body2 %}
+{% endblock body2 %}

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block title %} Update {% endblock title %}
+{% block head %}
+</head> 
+<body>
+{% endblock head %}
+{% block body %}
+{% if current_user.is_authenticated %}
+<br><br>
+<!-- Modal Add Record -->
+<div  id="newrecord" role="dialog">
+    <div class="modal-dialog">
+    
+                          <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">×</button>
+              <h4><span class="glyphicon glyphicon-dropplus"></span> Update Record</h4>
+        </div>
+              <div class="modal-body">
+                  <form role="form" action="/update/{{toupdate.sno}}" method="POST" id = 1>
+                    <div class="form-group">
+                        <label for="unit"><span class="glyphicon glyphicon-pencil"></span>Unit</label>
+                        <select name="unit" id="unit">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                          </select>
+                        <!-- <input type="text" class="form-control" name="unit" id="unit" required="" pattern="[0-9]" placeholder="Single Numer is allowed"> -->
+                    </div>
+                      <div class="form-group">
+                          <label for="usrname"><span class="glyphicon glyphicon-pencil"></span>Subject</label>
+                          <input type="text" value="{{toupdate.subject}}" class="form-control" name="subject" id="subject" required=""  placeholder="Name (only letters and spaces are allowed)">
+                      </div>
+                      <div class="form-group">
+                        <label for="usrname"><span class="glyphicon glyphicon-qrcode"></span> link<span class="glyphicon glyphicon-link"></span></label>
+                        <input type="text" value="{{toupdate.link}}" class="form-control" name="link" id="link" required="" placeholder="Google Drive Link" >
+                    </div>
+                    <div class="form-group">
+                        <label for="usrname"><span class="glyphicon glyphicon-education"></span>Semester</label><br>
+                        <!-- <input type="text" class="form-control" name="semester" id="semester" required="" placeholder = "If multiple seperate by comma e.g. 1, 2, 4"  > -->
+                          <div class = "col-md-12">  
+                            <input type="checkbox" name="1" value="semester">&nbsp;1&nbsp;&nbsp;
+                            <input type="checkbox" name="2" value="semester">&nbsp;2&nbsp;&nbsp;
+                            <input type="checkbox" name="3" value="semester">&nbsp;3&nbsp;&nbsp;
+                            <input type="checkbox" name="4" value="semester">&nbsp;4&nbsp;&nbsp;
+                            <input type="checkbox" name="5" value="semester">&nbsp;5&nbsp;&nbsp;
+                            <input type="checkbox" name="6" value="semester">&nbsp;6&nbsp;&nbsp;
+                            <input type="checkbox" name="7" value="semester">&nbsp;7&nbsp;&nbsp;
+                            <input type="checkbox" name="8" value="semester">&nbsp;8&nbsp;&nbsp;
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                            <label for="branch">Select Branch:</label><br>
+                            <div class = "col-md-2">
+                            <input type="checkbox" name="EEE" value="branch">EEE<br></div>
+                            <div class = "col-md-2">
+                            <input type="checkbox" name="ECE" value="branch">ECE<br></div>
+                            <div class = "col-md-2">
+                            <input type="checkbox" name="CSE" value="branch">CSE<br></div>
+                            <div class = "col-md-2">
+                            <input type="checkbox" name="IT" value="branch">IT<br></div>
+                            <div class = "col-md-2">
+                            <input type="checkbox" name="CIVIL" value="branch">CIVIL<br></div>
+                            <div class = "col-md-2">
+                            <input type="checkbox" name="MECH" value="branch">MECH.<br></div><br>
+                        </div>
+                          <button type="submit"  class="btn btn-block">Update Record
+                              <span class="glyphicon glyphicon-cloud-upload"></span>
+                          </button>
+                        </form>
+                </div>
+                        <div class="modal-footer">
+                              <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal">
+                              <span class="glyphicon glyphicon-remove"></span> Cancel
+                              </button>
+                              <p><a href="#">help </a>chahiye?</p>
+                        </div>
+    </div>
+    </div>
+    </div>
+    <!-- End of Add Record Modal -->
+
+{% endif %}
+{% endblock body %}
+{% block body2 %}
+{% endblock body2 %}
